@@ -1,68 +1,33 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const dashboardURL = 'https://dashboard.10up.com/blog/10upper/';
-    let dashboardId, harvestId, harvestApiKey;
+    let dashboardId, teamworkId;
     let timesheet = {};
     let startOfWeek = '';
     let refreshStatsButton = document.getElementById( 'refresh-stats' );
 
     chrome.storage.local.get({
         dashboardId: '',
-        harvestId: '',
-        harvestApiKey: ''
+        teamworkId: '',
     }, function(items) {
         dashboardId = items.dashboardId;
-        harvestId = items.harvestId;
-        harvestApiKey = items.harvestApiKey;
+        teamworkId = items.teamworkId;
 
         checkDashboard();
     });
 
-    const getTimesheet = function() {
+    const handleTimesheet = function() {
+        const startDate = moment( startOfWeek ).startOf('isoWeek').format( "YYYYMMDD" )
+        const endDate   = moment( startOfWeek ).add(1, 'weeks').startOf('week').format( "YYYYMMDD" )
 
-        const startDate = moment( startOfWeek ).startOf('isoWeek').format( "YYYY-MM-DD" )
-        const endDate   = moment( startOfWeek ).add(1, 'weeks').startOf('week').format( "YYYY-MM-DD" )
-
-        let xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-
-        timesheet = {};
-
-        xhr.addEventListener("readystatechange", function() {
-            if( this.readyState === 4 ) {
-                const timeEntries = JSON.parse( this.responseText );
-                timeEntries.time_entries.forEach( function( el ) {
-
-                    if ( typeof timesheet[`cpt${el.client.id}-${el.project.id}-${el.task.id}`] !== 'undefined' ) {
-                        timesheet[`cpt${el.client.id}-${el.project.id}-${el.task.id}`].hours = timesheet[`cpt${el.client.id}-${el.project.id}-${el.task.id}`].hours + parseFloat( el.rounded_hours );
-                    } else {
-                        timesheet[`cpt${el.client.id}-${el.project.id}-${el.task.id}`] = {
-                            'client': el.client.name,
-                            'client_id': el.client.id,
-                            'project_id': el.project.id,
-                            'project': el.project.name,
-                            'task_id': el.task.id,
-                            'task': el.task.name,
-                            'hours': parseFloat( el.rounded_hours )
-                        };
-                    }
-                } );
-
-                chrome.tabs.query( { active: true, currentWindow: true }, function( tabs ) {
-                    const stringTimesheet = JSON.stringify( timesheet );
-                    const weekStart = JSON.stringify( startDate );
-                    chrome.tabs.executeScript( tabs[0].id, {
-                        'code': `parseTimesheet(${stringTimesheet},${weekStart})`
-                    } );
-                } );
+        chrome.runtime.sendMessage(
+            { 
+                type: 'fetchTimesheet', 
+                start: startDate, 
+                end: endDate,
+                userId: teamworkId,
             }
-        });
-
-        xhr.open("GET", "https://api.harvestapp.com/v2/time_entries?from=" + startDate + '&to=' + endDate );
-        xhr.setRequestHeader("Harvest-Account-Id", harvestId );
-        xhr.setRequestHeader("authorization", 'Bearer ' + harvestApiKey );
-
-        xhr.send();
+        );
     }
 
     const checkDashboard = function( checkTimesheet ) {
@@ -95,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 startOfWeek = moment(startOfWeek).add( 1, 'days' ).format( 'YYYY-MM-DD' );
                             }
 
-                            getTimesheet();
+                            handleTimesheet();
                             refreshStatsButton.value = 'Refresh Stats';
                         });
                     }

@@ -1,29 +1,24 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    let dashboardId, harvestId, harvestApiKey;
+    let dashboardId, teamworkId;
 
     chrome.storage.local.get( {
         dashboardId: '',
-        harvestId: '',
-        harvestApiKey: ''
+        teamworkId: '',
     }, function(items) {
         dashboardId = items.dashboardId;
-        harvestId = items.harvestId;
-        harvestApiKey = items.harvestApiKey;
+        teamworkId = items.teamworkId;
 
         document.getElementById('dashboard-id').value    = dashboardId;
-        document.getElementById('harvest-id').value      = harvestId;
-        document.getElementById('harvest-api-key').value = harvestApiKey;
+        document.getElementById('teamwork-id').value    = teamworkId;
     } );
 
     const saveOptions = function() {
         dashboardId = document.getElementById('dashboard-id').value;
-        harvestId = document.getElementById('harvest-id').value;
-        harvestApiKey = document.getElementById('harvest-api-key').value;
+        teamworkId = document.getElementById('teamwork-id').value;
         chrome.storage.local.set({
             dashboardId: dashboardId,
-            harvestId: harvestId,
-            harvestApiKey: harvestApiKey,
+            teamworkId: teamworkId,
         }, function() {
             // Update status to let user know options were saved.
             let status = document.getElementById('status');

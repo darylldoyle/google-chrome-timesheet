@@ -26,7 +26,6 @@ const parseTimesheet = function( timeEntries, startDate ) {
     } else {
         timesheet = timeEntries;
     }
-    console.log( timesheet );
     setCookie( 'mapping-' + startOfWeek, JSON.stringify( timesheet ), 365 );
     storageKey = 'mapping-' + startOfWeek;
     let totalHoursLogged = 0;
@@ -51,7 +50,7 @@ const parseTimesheet = function( timeEntries, startDate ) {
                     const project_name = project.innerHTML;
                     timesheet.forEach( function( p ) {
                         if ( compareNames( project_name, p.project ) ) {
-                            hours_logged = p.hours;
+                            hours_logged = hours_logged + parseFloat( p.hours );
                         } else {
                             // check mapping.
                             const current_project = p;
@@ -102,27 +101,32 @@ const mapEntries = function( e ) {
             const project = 'Total' !== el.innerHTML ? el : false;
             if ( project ) {
                 const project_name = project.innerHTML.replace( '&amp;', '&' );
-                output += '<div><label>' + project_name + ':</label><select name="project[' + project_name + '][]" multiple size="5">';
-                timesheet.forEach( function( p ) {
-					output += '<optgroup label="' + p.project.replace( '&amp;', '&' ) + '">';
-                    output += '<option value="' + `cpt${p.client_id}-${p.project_id}-${p.task_id}` + '"';
-                    // check mapping.
-                    if ( items[storageKey]['project[' + project_name + '][]'] ) {
-                        if ( Array.isArray( items[storageKey]['project[' + project_name + '][]'] ) ) {
-                            items[storageKey]['project[' + project_name + '][]'].forEach(function (map_item) {
-                                if ( map_item === `cpt${p.client_id}-${p.project_id}-${p.task_id}` ) {
+                output += '<div><label>' + project_name + ':</label><select name="project[' + project_name + '][]" multiple size="10">';
+                const projects = [...new Set(timesheet.map(item => item.project))];
+
+                projects.forEach(function(proj) {
+                    output += '<optgroup label="' + proj.replace( '&amp;', '&' ) + '">';
+                    console.log(timesheet.filter(item => item.project === proj))
+                    timesheet.filter(item => item.project === proj).forEach( function( p ) {
+                        output += '<option value="' + `cpt${p.client_id}-${p.project_id}-${p.task_id}` + '"';
+                        // check mapping.
+                        if ( items[storageKey]['project[' + project_name + '][]'] ) {
+                            if ( Array.isArray( items[storageKey]['project[' + project_name + '][]'] ) ) {
+                                items[storageKey]['project[' + project_name + '][]'].forEach(function (map_item) {
+                                    if ( map_item === `cpt${p.client_id}-${p.project_id}-${p.task_id}` ) {
+                                        output += ' selected';
+                                    }
+                                });
+                            } else {
+                                if( items[storageKey]['project[' + project_name + '][]'] === `cpt${p.client_id}-${p.project_id}-${p.task_id}` ) {
                                     output += ' selected';
                                 }
-                            });
-                        } else {
-                            if( items[storageKey]['project[' + project_name + '][]'] === `cpt${p.client_id}-${p.project_id}-${p.task_id}` ) {
-                                output += ' selected';
                             }
                         }
-                    }
-					output += '>' + p.task.replace( '&amp;', '&' ) + '</option>';
-					output += '</optgroup>';
-                } );
+                        output += '>' + p.task.replace( '&amp;', '&' ) + '</option>';
+                    } );
+                    output += '</optgroup>';
+                })
                 output += '</select></div><br>';
             }
         } );
@@ -149,6 +153,7 @@ const mapEntries = function( e ) {
            chrome.storage.local.set( {
                [storageKey]: object
            }, function( items ) {
+            console.log('saved');
                parseTimesheet( timesheet, startOfWeek );
            } );
             return false;
@@ -166,14 +171,14 @@ const init = function() {
     if ( arg ) {
         startOfWeek = arg;
     } else {
-        startOfWeek = moment().format( "YYYY-MM-DD" );
+        startOfWeek = moment().format( "YYYYMMDD" );
     }
 
     if( 0 === moment( startOfWeek ).day() ) {
-        startOfWeek = moment( startOfWeek ).add( 1, 'days' ).format( 'YYYY-MM-DD' );
+        startOfWeek = moment( startOfWeek ).add( 1, 'days' ).format( 'YYYYMMDD' );
     }
 
-    const startDate = moment( startOfWeek ).startOf( 'isoWeek' ).format( 'YYYY-MM-DD' );
+    const startDate = moment( startOfWeek ).startOf( 'isoWeek' ).format( 'YYYYMMDD' );
 
     try {
         const timeSheet = JSON.parse( getCookie( 'mapping-' + startDate ) );
@@ -244,3 +249,9 @@ if (
 } else {
     document.addEventListener("DOMContentLoaded", init);
 }
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.type === "parseTimesheet") {
+        parseTimesheet(request.timeEntries, request.startDate);
+    }
+});
