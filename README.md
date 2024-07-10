@@ -46,10 +46,6 @@ This is a concept tool to check 10up resourcing and time logged in Teamwork
 
 
 7. Click "Save Settings"
-
-![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2024-07-10/1ad59d86-630b-4d55-b2b4-47766700a50d/ascreenshot.jpeg?tl_px=377,440&br_px=1237,921&force_format=png&width=860&wat_scale=76&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=402,212)
-
-
 8. Close the popup
 
  ---
