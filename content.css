@@ -29,3 +29,15 @@
 #mapping_content option {
     border-bottom: 1px solid #CCC;
 }
+
+.yellow-cell {
+    background-color: #ffffce;
+}
+
+.red-cell {
+    background-color: #ffa1a1;
+}
+
+.green-cell {
+    background-color: #d7f9d7;
+}
