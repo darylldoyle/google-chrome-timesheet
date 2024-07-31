@@ -50,27 +50,32 @@ table {
 /* custom CSS here */
 body{
     margin: 0;
-    background: #035aa6;
-    padding: 5rem 0;
+    background: #fff;
+    padding: 3em 0;
     width: 300px;
 }
 
 #refresh-stats {
     margin: 0 auto;
     display: block;
-    padding: 0.5rem;
-    border: 1px solid #000;
-    font: 1.5rem console, monospace;
+    padding: 0.5em 1em;
+    font: 1.5em -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #3fa3a7 !important;
+    color: #fff !important;
+    border: none;
 }
 
-#goto-teamwork,
-#goto-harvest {
-    text-align: center;
-    margin-top: 2rem;
+#refresh-stats:active {
+    background: #2e7c80 !important;
 }
 
-#goto-teamwork a,
-#goto-harvest a {
-    color: #FFF;
-    font: 1.5rem console, monospace;
+.links {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 2em;
+}
+
+.links img {
+    width: 75px;
+    height: auto;
 }
