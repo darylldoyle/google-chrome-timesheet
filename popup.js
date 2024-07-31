@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     const dashboardURL = 'https://dashboard.10up.com/blog/10upper/';
-    let dashboardId, teamworkId;
+    let dashboardId, teamworkId, harvestId, harvestApiKey;
     let timesheet = {};
     let startOfWeek = '';
     let refreshStatsButton = document.getElementById( 'refresh-stats' );
@@ -9,9 +9,13 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.local.get({
         dashboardId: '',
         teamworkId: '',
+        harvestId: '',
+        harvestApiKey: ''
     }, function(items) {
         dashboardId = items.dashboardId;
         teamworkId = items.teamworkId;
+        harvestId = items.harvestId;
+        harvestApiKey = items.harvestApiKey;
 
         checkDashboard();
     });
@@ -21,11 +25,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const endDate   = moment( startOfWeek ).add(1, 'weeks').startOf('week').format( "YYYYMMDD" )
 
         chrome.runtime.sendMessage(
-            { 
-                type: 'fetchTimesheet', 
-                start: startDate, 
+            {
+                type: 'fetchTimesheet',
+                start: startDate,
                 end: endDate,
                 userId: teamworkId,
+                harvestId: harvestId,
+                harvestApiKey: harvestApiKey,
             }
         );
     }

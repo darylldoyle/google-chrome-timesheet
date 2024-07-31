@@ -63,11 +63,13 @@ body{
     font: 1.5rem console, monospace;
 }
 
+#goto-teamwork,
 #goto-harvest {
     text-align: center;
     margin-top: 2rem;
 }
 
+#goto-teamwork a,
 #goto-harvest a {
     color: #FFF;
     font: 1.5rem console, monospace;

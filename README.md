@@ -37,16 +37,23 @@ This is a concept tool to check 10up resourcing and time logged in Teamwork
 
 5. Click "Dashboard ID" and enter your ID
 
-![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2024-07-10/2b614ccd-5f8f-4f85-b9c4-e0d871a54e14/user_cropped_screenshot.jpeg?tl_px=375,350&br_px=1235,831&force_format=png&width=860&wat_scale=76&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=402,212)
+![](images/dashboard_id.png)
 
 
 6. Click "Teamwork User ID" and enter your ID
 
-![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2024-07-10/d39f565d-b8a9-4531-8596-c49479474ac4/user_cropped_screenshot.jpeg?tl_px=360,398&br_px=1220,879&force_format=png&width=860&wat_scale=76&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=402,212)
+![](images/teamwork_user_id.png)
 
+7. Click "Harvest Account ID" and enter your ID.
 
-7. Click "Save Settings"
-8. Close the popup
+![](images/harvest_account_id.png)
+
+8. Click "Harvest API Key" and enter your API key
+
+![](images/harvest_api_key.png)
+
+9. Click "Save Settings"
+10. Close the popup
 
  ---
 ### Getting your Dashboard ID
@@ -71,6 +78,22 @@ This is a concept tool to check 10up resourcing and time logged in Teamwork
 4. Select the ID out of the URL E.G. `app/people/YOUR_ID/details`
 
 ![](https://ajeuwbhvhr.cloudimg.io/colony-recorder.s3.amazonaws.com/files/2024-07-10/01b7480a-1a12-4172-a8a1-d31026a866d4/user_cropped_screenshot.jpeg?tl_px=16,0&br_px=875,480&force_format=png&width=860&wat_scale=76&wat=1&wat_opacity=0.7&wat_gravity=northwest&wat_url=https://colony-recorder.s3.us-west-1.amazonaws.com/images/watermarks/FB923C_standard.png&wat_pad=402,34)
+
+---
+### Getting your Harvest Account ID and API key
+
+1. Visit https://id.getharvest.com/developers
+
+2. Click "Create new personal access token"
+
+![](images/personal_access_token.png)
+
+3. Give your token a name (e.g. Chrome Extension) and then click "Create personal access token"
+
+![](images/token_name.png)
+
+4. Copy the API key (i.e. Your Token) and account ID into the extension settings
+![](images/harvest.png)
 
 ---
 
