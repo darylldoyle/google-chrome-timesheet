@@ -1,3 +1,7 @@
+body {
+    position: relative;
+}
+
 #mapping_content {
     padding: 2rem;
     color: #000;
@@ -40,4 +44,91 @@
 
 .green-cell {
     background-color: #d7f9d7;
+}
+
+
+/* Loading Overlay */
+
+#loading-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#spinner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+#spinner:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    margin-top: -40px;
+    border: 10px solid #ffffff;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    border-top-color: #3fa3a7;
+    border-right-color: #3fa3a7;
+    -moz-animation: rotate 0.5s linear infinite;
+    -webkit-animation: rotate 0.5s linear infinite;
+    animation: rotate 0.5s linear infinite;
+}
+
+@-moz-keyframes rotate {
+    0% {
+        -moz-transform: rotateZ(-360deg);
+        transform: rotateZ(-360deg);
+    }
+    50% {
+        -moz-transform: rotateZ(-180deg);
+        transform: rotateZ(-180deg);
+    }
+    100% {
+        -moz-transform: rotateZ(0deg);
+        transform: rotateZ(0deg);
+    }
+}
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotateZ(-360deg);
+        transform: rotateZ(-360deg);
+    }
+    50% {
+        -webkit-transform: rotateZ(-180deg);
+        transform: rotateZ(-180deg);
+    }
+    100% {
+        -webkit-transform: rotateZ(0deg);
+        transform: rotateZ(0deg);
+    }
+}
+@keyframes rotate {
+    0% {
+        -moz-transform: rotateZ(-360deg);
+        -ms-transform: rotateZ(-360deg);
+        -webkit-transform: rotateZ(-360deg);
+        transform: rotateZ(-360deg);
+    }
+    50% {
+        -moz-transform: rotateZ(-180deg);
+        -ms-transform: rotateZ(-180deg);
+        -webkit-transform: rotateZ(-180deg);
+        transform: rotateZ(-180deg);
+    }
+    100% {
+        -moz-transform: rotateZ(0deg);
+        -ms-transform: rotateZ(0deg);
+        -webkit-transform: rotateZ(0deg);
+        transform: rotateZ(0deg);
+    }
 }

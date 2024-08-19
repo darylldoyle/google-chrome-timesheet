@@ -108,7 +108,6 @@ const mapEntries = function( e ) {
 
                 projects.forEach(function(proj) {
                     output += '<optgroup label="' + proj.replace( '&amp;', '&' ) + '">';
-                    console.log(timesheet.filter(item => item.project === proj))
                     timesheet.filter(item => item.project === proj).forEach( function( p ) {
                         output += '<option value="' + `cpt${p.client_id}-${p.project_id}-${p.task_id}` + '"';
                         // check mapping.
@@ -155,7 +154,6 @@ const mapEntries = function( e ) {
            chrome.storage.local.set( {
                [storageKey]: object
            }, function( items ) {
-            console.log('saved');
                parseTimesheet( timesheet, startOfWeek );
            } );
             return false;
@@ -293,6 +291,21 @@ const remaining = function() {
     return;
 };
 
+function addLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'loading-overlay';
+    overlay.innerHTML = '<div id="spinner"></div>';
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loading-overlay');
+
+    if (overlay) {
+        overlay.parentNode.removeChild(overlay);
+    }
+}
+
 if (
     document.readyState === "complete" ||
     (document.readyState !== "loading" && !document.documentElement.doScroll)
@@ -305,5 +318,13 @@ if (
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.type === "parseTimesheet") {
         parseTimesheet(request.timeEntries, request.startDate);
+    }
+
+    if (request.type === "startTimesheetRefresh") {
+        addLoadingOverlay();
+    }
+
+    if (request.type === "finishTimesheetRefresh") {
+        removeLoadingOverlay();
     }
 });
