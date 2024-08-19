@@ -20,9 +20,20 @@ document.addEventListener('DOMContentLoaded', function() {
         checkDashboard();
     });
 
-    const handleTimesheet = function() {
+    const handleTimesheet = async function() {
         const startDate = moment( startOfWeek ).startOf('isoWeek').format( "YYYYMMDD" )
         const endDate   = moment( startOfWeek ).add(1, 'weeks').startOf('week').format( "YYYYMMDD" )
+
+        const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+
+        if (tab && 'id' in tab) {
+            chrome.tabs.sendMessage(
+                tab.id,
+                {
+                    type: 'startTimesheetRefresh',
+                }
+            );
+        }
 
         chrome.runtime.sendMessage(
             {
